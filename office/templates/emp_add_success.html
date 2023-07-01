@@ -2,11 +2,6 @@
 {% include 'admin_menu.html' %}
 {% block content %}
 
-
-<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Submit Employee
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -15,16 +10,26 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Employee successfully added</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
         ...
       </div>
       <div class="modal-footer">
 <!--        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
         <a href="{% url 'admin_home' %}"  type="button" class="btn btn-secondary"> Back Home </a>
+        <a href="{% url 'view_all_emp' %}"  type="button" class="btn btn-secondary"> View Employee list </a>
         <a href="{% url 'emp_add' %}"  type="button" class="btn btn-primary"> Add another </a>
       </div>
     </div>
   </div>
 </div>
+
+  <script>
+    // Display the modal when the page loads
+    window.onload = function() {
+      var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      modal.show();
+    };
+  </script>
 
 {% endblock %}

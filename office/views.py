@@ -122,6 +122,7 @@ def view_all_emp(request):
 #         # messages.error(request, 'Error. Please try again!')
 #     return render(request, 'employee_add.html', {'form': form})
 
+@login_required(login_url='/admin_login')
 def add_emp(request):
     if request.method == 'POST':
         form = EmployeeRegistrationForm(request.POST)
