@@ -1,0 +1,46 @@
+
+{% include 'admin_menu.html' %}
+{% block content %}
+
+<h1 class="display-3" style="background-color:#1E74FD;color:000;font-weight: normal;">
+    {{data}} </h1>
+
+<div class="section full mt-1 mb-2">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="wide-block ">
+            <div class="table-responsive">
+            <table class="table">
+
+                <thead>
+                    <tr>
+                    {{ form.label_tag }}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>
+
+                    {{ form }}
+
+                    </td>
+                    </tr>
+
+                 </tbody>
+                </table>
+                    <button type="submit"
+                    style="width:50%;background-color:#A1A1A2;color:#fff;border-radius:10px;font-weight:bold;">
+                    Submit
+                    </button>
+
+        </div>
+
+        </div>
+
+ 
+    </form>
+</div>
+
+
+
+{% endblock %}
