@@ -1,9 +1,13 @@
 
 {% include 'admin_menu.html' %}
-{% block content %}
+{% include 'script_date_picker.html' %}
 
-<h1 class="display-3" style="background-color:#1E74FD;color:000;font-weight: normal;">
-    {{data}} </h1>
+{% block content %}
+{% block date %}
+
+
+<!--<h1 class="display-10" style="background-color:#87a3c4;color:000;font-weight: normal;">-->
+<!--    Register new Employee </h1>-->
 
 <div class="section full mt-1 mb-2">
     <form method="post" enctype="multipart/form-data">
@@ -48,6 +52,9 @@
     var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
     modal.show();
   });
+
+
 </script>
 
+{% endblock %}
 {% endblock %}

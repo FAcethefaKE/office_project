@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm  # default django user creation form
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User  # built-in django user model
+from django.contrib.auth.models import User
 from .models import EmployeeProfile
+from django import forms
 
 
 class EmployeeRegistrationForm(forms.ModelForm):
@@ -14,6 +15,9 @@ class EmployeeRegistrationForm(forms.ModelForm):
     class Meta:
         model = EmployeeProfile
         fields = ('time_card_nr', 'first_name', 'last_name', 'email', 'mobile', 'dob', 'nationality', 'address')
+        widgets = {
+            'dob': forms.DateInput(attrs={'class': 'datepicker'}),
+        }
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -36,10 +40,41 @@ class EmployeeRegistrationForm(forms.ModelForm):
         return employee_profile
 
 
+# class EmployeeUpdateForm(forms.ModelForm):
+#     class Meta:
+#         model = EmployeeProfile
+#         fields = ('time_card_nr', 'first_name', 'last_name', 'email', 'mobile', 'dob', 'nationality', 'address')
+#         widgets = {'password': forms.PasswordInput()}
 
 
+class EmployeeUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField()
 
+    class Meta:
+        model = EmployeeProfile
+        fields = ('time_card_nr', 'first_name', 'last_name', 'email', 'mobile', 'dob', 'nationality', 'address')
+        widgets = {
+            'dob': forms.DateInput(attrs={'class': 'datepicker'}),
+        }
 
+    def __init__(self, *args, **kwargs):
+        super(EmployeeUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['time_card_nr'].widget.attrs['readonly'] = True  # Make time_card_nr field read-only
+
+    def save(self, commit=True):
+        employee_profile = super().save(commit=False)
+        user = employee_profile.user
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        employee_profile.user.first_name = self.cleaned_data['first_name']
+        employee_profile.user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        if commit:
+            employee_profile.save()
+            user.save()
+        return employee_profile
 
 
 

@@ -2,8 +2,9 @@
 {% block content %}
 
 
-<h3 class="title">Employee list</h3>
-
+<!--<h3 class="title">Employee list</h3>-->
+<h1 class="display-10" style="background-color:#87a3c4;color:000;font-weight: normal;">
+    Employees list </h1>
 
     <div class="section mt-2">
          <div class="table-responsive mt-3">
@@ -34,7 +35,7 @@
                     <td><h5>{{ emp.mobile }}</h5></td>
                     <td><h5>{{ emp.nationality }}</h5></td>
 					<td><h5>{{ emp.address }}</h5></td>
-					<td><a href="emp_update/{{emp.id}}" class="btn btn-secondary" >Update </a></td>
+					<td><a href="{% url 'emp_update' emp_id=emp.id %}" class="btn btn-secondary" >Update </a></td>
                     <td><a href="emp_delete/{{emp.id}}" class="btn btn-danger" >Delete</a></td>
                 </tr>
                 {% endfor %}

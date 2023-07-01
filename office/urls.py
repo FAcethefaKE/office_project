@@ -18,6 +18,8 @@ urlpatterns = [
     path('emp_add/', views.add_emp, name='emp_add'),
     path('add_success/', views.emp_add_success, name='emp_add_success'),
     path('employee_login/', views.employee_login, name="employee_login"),
+    path('view_all_emp/emp_update/<int:emp_id>/', views.employee_update, name='emp_update'),
+    path('update_success/', views.emp_update_success, name='emp_update_success'),
 
 ]
 
