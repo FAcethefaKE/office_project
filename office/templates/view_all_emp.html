@@ -1,18 +1,16 @@
 {% include 'admin_menu.html' %}
 {% block content %}
+{% load static %}
 
-
-<!--<h3 class="title">Employee list</h3>-->
-<h1 class="display-10" style="background-color:#87a3c4;color:000;font-weight: normal;">
-    Employees list </h1>
 
     <div class="section mt-2">
          <div class="table-responsive mt-3">
             <table class="table table-hover">
                 <thead>
                     <th><h3>#</h3></th>
-                    <th><h3> Time card nr. </h3></th>
-                    <th><h3>Name</h3></th>
+                    <th><h3>Time card nr.</h3></th>
+                    <th><h3>First Name</h3></th>
+                    <th><h3>Last Name</h3></th>
                     <th><h3>Date of Birth</h3></th>
                     <th><h3>Email</h3></th>
                     <th><h3>Mobile</h3></th>
@@ -29,18 +27,20 @@
                     <td scope="row">
                     <h5>{{ employee_number|add:forloop.counter }}</h5></td>
                     <td><h5>{{ emp.time_card_nr }}</h5></td>
-                    <td><h5>{{ emp.user.first_name }} {{ emp.user.last_name }}</h5></td>
-					<td><h5>{{ emp.dob }}</h5></td>
+                    <td><h5>{{ emp.user.first_name }}</h5></td>
+                    <td><h5>{{ emp.user.last_name }}</h5></td>
+                    <td><h5>{{ emp.dob }}</h5></td>
                     <td><h5>{{ emp.user.email }}</h5></td>
                     <td><h5>{{ emp.mobile }}</h5></td>
                     <td><h5>{{ emp.nationality }}</h5></td>
 					<td><h5>{{ emp.address }}</h5></td>
 					<td><a href="{% url 'emp_update' emp_id=emp.id %}" class="btn btn-secondary" >Update </a></td>
-                    <td><a href="emp_delete/{{emp.id}}" class="btn btn-danger" >Delete</a></td>
+                    <td><a href="{% url 'emp_delete' emp_id=emp.id %}" class="btn btn-danger" >Delete</a></td>
                 </tr>
                 {% endfor %}
 
             </tbody>
+        </table>
         </table>
     </div>
 

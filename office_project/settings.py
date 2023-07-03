@@ -129,6 +129,11 @@ STATICFILES_DIRS = (
 # MEDIA_URL = '/img/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# AUTHENTICATION_BACKENDS = 'django.contrib.auth.backends.ModelBackend'
+
+AUTH_USER_MODEL = 'office.CustomUser'
+# Replace 'yourapp' with the actual app name where your custom User model is defined
+
 
 LOGOUT_REDIRECT_URL = "index"
 
