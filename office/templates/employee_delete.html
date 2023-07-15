@@ -1,0 +1,14 @@
+{% include 'admin_menu.html' %}
+
+<div class="section full mt-1 mb-2">
+    <h3> Are you sure you want to delete this employee "
+    <span style="color: red;">{{ employee.user.first_name }} {{ employee.user.last_name }}</span>"?
+    </h3>
+
+    <form method="post" action="{% url 'emp_delete' employee.id %}">
+
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'view_all_emp' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

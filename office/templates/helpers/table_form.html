@@ -1,0 +1,48 @@
+
+{% block table %}
+
+<div class="section full mt-1 mb-2">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="wide-block ">
+            <div class="table-responsive">
+            <table class="table">
+
+                <thead>
+                    <tr>
+                    {{ form.label_tag }}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>
+
+                    {{ form }}
+
+                    </td>
+                    </tr>
+
+                 </tbody>
+                </table>
+                    <button type="submit" id="submitBtn"
+                    style="width:50%;background-color:#A1A1A2;color:#fff;border-radius:10px;font-weight:bold;">
+                    Submit
+                    </button>
+            </div>
+        </div>
+     </form>
+
+</div>
+<script>
+  // Display the modal when the form is submitted successfully
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the form from submitting
+
+    // Display the modal
+    var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    modal.show();
+  });
+
+</script>
+
+{% endblock %}
