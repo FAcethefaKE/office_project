@@ -51,7 +51,7 @@
                         {% endfor %}
                     </td>
 					<td><a href="{% url 'task_update' tsk_id=tsk.id %}" class="btn btn-secondary" >Update </a></td>
-					<td><a href="{% url 'task_delete' tsk_id=tsk.id %}" class="btn btn-secondary" >Update </a></td>
+					<td><a href="{% url 'task_delete' tsk_id=tsk.id %}" class="btn btn-danger" >Delete </a></td>
 
                 </tr>
                 {% endfor %}
