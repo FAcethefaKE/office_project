@@ -11,11 +11,8 @@ from django.core.paginator import Paginator
 
 from django.contrib import messages
 
-from django.contrib.auth import get_user_model
 from .forms import EmployeeRegistrationForm, EmployeeUpdateForm, TaskCreateForm
 from .models import EmployeeProfile, Task
-
-register = template.Library()
 
 
 def index(request):
@@ -37,37 +34,27 @@ def admin_login(request):
         return render(request, 'admin_login.html')
 
 
+@login_required(login_url='/admin_login')
 def admin_home(request):
     return render(request, 'admin_home.html')
 
 
 # def employee_login(request):
 #     if request.method == 'POST':
-#         try:
-#             user = User.objects.get(Email=request.POST['Email'], Password=request.POST['Password'])
-#             return redirect('home')
-#         except User.DoesNotExist:
+#         email = request.POST['email']
+#         password = request.POST['password']
+#         user = authenticate(request, username=email, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('employee_home')
+#         else:
 #             return render(request, 'employee_login.html', {'error': 'Username or password is incorrect!'})
 #     else:
 #         return render(request, 'employee_login.html')
-
-
-def employee_login(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('employee_home')
-        else:
-            return render(request, 'employee_login.html', {'error': 'Username or password is incorrect!'})
-    else:
-        return render(request, 'employee_login.html')
-
-
-def employee_home(request):
-    return render(request, 'employee_home.html')
+#
+#
+# def employee_home(request):
+#     return render(request, 'employee_home.html')
 
 
 @login_required(login_url='/admin_login')
@@ -205,6 +192,7 @@ def task_update(request, tsk_id):
     return render(request, 'task_update.html', context)
 
 
+@login_required(login_url='/admin_login')
 def task_delete(request, tsk_id):
     task = get_object_or_404(Task, id=tsk_id)
     data = 'Delete Task from DB'

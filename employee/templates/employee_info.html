@@ -1,0 +1,30 @@
+
+{%  include 'employee_menu.html' %}
+
+{% block content %}
+
+<div class="section full mt-1 mb-2">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="wide-block ">
+            <div class="table-responsive">
+            <table class="table">
+
+                <tbody>
+                    <tr>
+                    <td>
+
+                    {{ form }}
+
+                    </td>
+                    </tr>
+
+                 </tbody>
+                </table>
+
+            </div>
+        </div>
+     </form>
+
+</div>
+{% endblock %}

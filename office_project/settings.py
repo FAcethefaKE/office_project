@@ -31,8 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "employee",
     "office",
-    'crispy_forms',
+    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -132,8 +133,6 @@ STATICFILES_DIRS = (
 # AUTHENTICATION_BACKENDS = 'django.contrib.auth.backends.ModelBackend'
 
 AUTH_USER_MODEL = 'office.CustomUser'
-# Replace 'yourapp' with the actual app name where your custom User model is defined
-
 
 LOGOUT_REDIRECT_URL = "index"
 

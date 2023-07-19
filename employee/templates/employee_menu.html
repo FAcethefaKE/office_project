@@ -1,4 +1,3 @@
-
 {% load static %}
 {% block content %}
 
@@ -19,41 +18,18 @@
     </style>
 </head>
 
-    <!-- Capsule -->
 <div id="appCapsule" >
 
     <div class="section wide-block" >
-        <div class="header-large-title text-secondary ">
-            <h3 class="title"> Office Board for {{ user.username }} </h3>
+        <div class="header-large-title text-primary ">
+            <h3 class="title"> Wellcome, {{ user.first_name }} </h3>
         </div>
 
-    <h2 class="display-8" style="background-color: #87a3c4; color: #000; font-weight: normal;
+    <h2 class="display-8" style="background-color: #6495ED; color: #000; font-weight: normal;
     padding: 10px; margin-left: -20px;">{{ data }}
     </h2>
-
-
-<!--    &lt;!&ndash; Search Component &ndash;&gt;-->
-<!--&lt;!&ndash;    <div id="search" class="appHeader">&ndash;&gt;-->
-<!--        <form class="search-form" action="#" method="GET">-->
-<!--            <div class="form-group searchbox">-->
-<!--                <input type="text" class="form-control" name="query" placeholder="Search...">-->
-<!--                <i class="input-icon">-->
-<!--                    <ion-icon name="search-outline"></ion-icon>-->
-<!--                </i>-->
-<!--                <a href="#" class="ms-1 close toggle-searchbox">-->
-<!--                    <ion-icon name="close-circle"></ion-icon>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--    </div>-->
-<!--        <div class="listview-title mt-2"></div>-->
-<!--            <div class="section mt-2">-->
-<!--                <div class="row">-->
-
-<!--                </div>-->
     </div>
+
 </div>
 
     <!-- Header -->
@@ -63,7 +39,7 @@
                 <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
-        <div class="pageTitle">Office Menu</div>
+        <div class="pageTitle">EmployeePage</div>
     </div>
 
     <!-- Sidebar -->
@@ -73,13 +49,13 @@
                 <div class="modal-body p-0">
 
                     <!-- profile box -->
-                    <div class="profileBox bg-secondary">
+                    <div class="profileBox" style="background-color: #6495ED">
                         <div class="image-wrapper">
                     <img src="{% static 'office/images/logo.png' %}" alt="image" class="imaged rounded">
                             </div>
                         <div class="in">
-                            <strong>Office Menu</strong>
-                           
+                            <strong>User Menu</strong>
+
                         </div>
                         <a href="#" class="close-sidebar-button" data-bs-dismiss="modal">
                             <ion-icon name="close"></ion-icon>
@@ -88,32 +64,32 @@
 
                     <ul class="listview flush transparent no-line image-listview mt-2">
                         <li>
-                            <a href="{% url 'admin_home' %}" class="item">
+                            <a href="{% url 'employee_home' %}" class="item">
                                 <div class="icon-box bg-secondary">
-                                
+
                                     <ion-icon name="home-outline"></ion-icon>
                                 </div>
                                 <div class="in">
-                                    Home 
+                                    Home
                                 </div>
                             </a>
                         </li>
                         <li>
 
-                        
+
                          <li>
-                            <a href="{% url 'view_all_emp' %}" class="item">
+                            <a href="{% url 'employee_info' %}" class="item">
                                 <div class="icon-box bg-secondary">
                                    <ion-icon name="newspaper-outline"></ion-icon>
                                 </div>
                                 <div class="in">
-                                    View Employee Info
+                                    View Your Info
                                 </div>
                             </a>
                         </li>
 
                          <li>
-                            <a href="{% url 'view_all_task' %}" class="item">
+                            <a href="{% url 'employee_task' %}" class="item">
                                 <div class="icon-box bg-secondary">
                                    <ion-icon name="clipboard-outline"></ion-icon>
                                 </div>
@@ -125,7 +101,7 @@
 
 
                         <li>
-                            <a href="{% url 'emp_add' %}" class="item">
+                            <a href="#" class="item">
                                 <div class="icon-box bg-secondary">
                                 <ion-icon name="person-add-outline"></ion-icon>
                                 </div>
@@ -136,7 +112,7 @@
                         </li>
 
                         <li>
-                            <a href="{% url 'task_add' %}" class="item">
+                            <a href="#" class="item">
                                 <div class="icon-box bg-secondary">
                                 <ion-icon name="calendar-outline"></ion-icon>
                                 </div>
@@ -156,21 +132,21 @@
                                 </div>
                                 <div class="in">
                                     <div>Logout</div>
-                                   
+
                                 </div>
                             </a>
                         </li>
                     </ul>
 
-                 
+
                 </div>
 
                 <!-- sidebar buttons -->
                 <div class="sidebar-buttons">
-                 <a href="{% url 'admin_home' %}" class="button">
+                 <a href="{% url 'employee_home' %}" class="button">
                         <ion-icon name="home-outline"></ion-icon>
                     </a>
-                   
+
                     <a href="{% url 'logout' %}" class="button">
                         <ion-icon name="log-out-outline"></ion-icon>
                     </a>
@@ -185,7 +161,7 @@
 
   <!-- Bottom Menu -->
     <div class="appBottomMenu">
-        <a href="{% url 'admin_home' %}" class="item active">
+        <a href="{% url 'employee_home' %}" class="item active">
             <div class="col">
                 <ion-icon name="home-outline"></ion-icon>
                   <span class="badge badge-secondary">home</span>
@@ -193,7 +169,7 @@
             </div>
         </a>
 
-      <a  href="{% url 'view_all_task' %}" class="item">
+      <a  href="{% url 'employee_task' %}" class="item">
             <div class="col">
             <ion-icon name="newspaper-outline"></ion-icon>
              <span class="badge badge-secondary">View Task Info</span>

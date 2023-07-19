@@ -6100,3 +6100,14 @@ body.dark-mode-active {
     box-shadow: 0 0 0 4px #0F1C2F, 0 0 0 5px rgba(88, 109, 127, 0.5); }
   body.dark-mode-active .story-block .passive img {
     box-shadow: 0 0 0 4px #0F1C2F, 0 0 0 5px rgba(88, 109, 127, 0.5); }
+
+.btn-mark-read {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-mark-read:hover {
+  background-color: #495057;
+  border-color: #495057;
+}

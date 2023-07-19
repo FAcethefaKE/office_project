@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 from django import forms
-from .models import CustomUser, EmployeeProfile, Task
+from .models import CustomUser, EmployeeProfile, Task, TaskAssignmentConfirm
 
 
 class EmployeeRegistrationForm(forms.ModelForm):
@@ -102,7 +102,11 @@ class TaskCreateForm(forms.ModelForm):
         if commit:
             task.save()
             task.assigned_to.set(self.cleaned_data['employees'].values_list('user_id', flat=True))  # Assign the selected employees
+
+            for user in task.assigned_to.all():
+                TaskAssignmentConfirm.objects.create(task=task, employee=user)
         return task
+
 
 
 
