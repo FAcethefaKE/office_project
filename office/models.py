@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.username
+        return f'{self.first_name} {self.last_name}'
 
 
 class EmployeeProfile(models.Model):
@@ -32,7 +32,7 @@ class Task(models.Model):
     def save(self, *args, **kwargs):
         created = not self.pk
         super().save(*args, **kwargs)
-        # Create TaskAssignmentConfirm instances for each assigned user
+        """Create TaskAssignmentConfirm instances for users"""
         if created:
             for user in self.assigned_to.all():
                 TaskAssignmentConfirm.objects.get_or_create(task=self, employee=user)

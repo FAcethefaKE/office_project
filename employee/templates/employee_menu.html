@@ -10,14 +10,9 @@
      integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="icon" href="#" />
     <link rel="stylesheet" href="{% static 'office/styles.css' %}">
-    <style>
-        html, body {
-            height: 100%;
-            overflow: auto;
-        }
-    </style>
-</head>
 
+</head>
+ <title>EmployeePage</title>
 <div id="appCapsule" >
 
     <div class="section wide-block" >
@@ -101,29 +96,15 @@
 
 
                         <li>
-                            <a href="#" class="item">
+                            <a href="{% url 'password_change'%}" class="item">
                                 <div class="icon-box bg-secondary">
-                                <ion-icon name="person-add-outline"></ion-icon>
+                                <ion-icon name="build-outline"></ion-icon>
                                 </div>
                                 <div class="in">
-                                    Add Employee
+                                    Change Password
                                 </div>
                             </a>
                         </li>
-
-                        <li>
-                            <a href="#" class="item">
-                                <div class="icon-box bg-secondary">
-                                <ion-icon name="calendar-outline"></ion-icon>
-                                </div>
-                                <div class="in">
-                                    Add Task
-                                </div>
-                            </a>
-                        </li>
-
-
-
 
                          <li>
                             <a href="{% url 'logout' %}" class="item">
@@ -169,10 +150,14 @@
             </div>
         </a>
 
-      <a  href="{% url 'employee_task' %}" class="item">
+        <a  href="{% url 'employee_task' %}" class="item">
             <div class="col">
             <ion-icon name="newspaper-outline"></ion-icon>
-             <span class="badge badge-secondary">View Task Info</span>
+            {% if has_unread_tasks %}
+                <span class="badge badge-danger">{{ unread_tasks_count }} Unread Tasks</span>
+            {% else %}
+                <span class="badge badge-secondary">View Task Info</span>
+            {% endif %}
             </div>
         </a>
 
@@ -187,23 +172,6 @@
             </div>
         </a>
 
-                <form class="search-form" action="#" method="GET">
-
-            <div class="form-group searchbox">
-                <input type="text" class="form-control" name="query" placeholder="Search...">
-                <i class="input-icon">
-                    <ion-icon name="search-outline"></ion-icon>
-                </i>
-                <a href="#" class="ms-1 close toggle-searchbox">
-                    <ion-icon name="close-circle"></ion-icon>
-                </a>
-            </div>
-        </form>
-<!--        <a href="#" class="item" data-bs-toggle="modal" data-bs-target="#sidebarPanel">-->
-<!--            <div class="col">-->
-<!--                <ion-icon name="menu-outline"></ion-icon>-->
-<!--            </div>-->
-<!--        </a>-->
 </div>
 
 

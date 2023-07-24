@@ -1,16 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
 from django.utils import timezone
 
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from office.forms import EmployeeRegistrationForm
 from office.models import Task, TaskAssignmentConfirm
+
+from .forms import CustomPasswordChangeForm
 
 
 def employee_login(request):
@@ -71,7 +69,7 @@ def assigned_tasks(request):
         'task_number': (page_obj.number - 1) * paginator.per_page,
         'data': 'Assigned tasks',
         'show_outdated': show_outdated,
-        'confirmation': confirmation
+        'confirmation': confirmation,
     }
 
     if not tasks:
@@ -97,3 +95,19 @@ def mark_task_as_read(request, task_id):
         return redirect('employee_task')
 
     return redirect('employee_task')
+
+
+@login_required(login_url='/employee_login')
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('password_change_success')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'password_change.html', {'form': form})
+
+
+def change_password_success(request):
+    return render(request, 'password_change_success.html')

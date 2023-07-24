@@ -44,11 +44,19 @@
                     <td><h5>{{ tsk.assign_date }}</h5></td>
                     <td>
                         {% for employee in tsk.assigned_to.all %}
-                            <h5>{{ employee.first_name }} {{ employee.last_name }}</h5>
-                            {% if not forloop.last %} {% endif %}
-                            {% empty %}
-                            <h5>No employees assigned</h5>
-                        {% endfor %}
+                            {% for conf in confirmation_office %}
+                                {% if conf.task == tsk and conf.employee == employee %}
+                                    {% if conf.is_read %}
+                                    <h5>{{ employee.first_name }} {{ employee.last_name }}</h5>
+                                {% else %}
+                                    <h5 style="color: red;">{{ employee.first_name }} {{ employee.last_name }}</h5>
+                                {% endif %}
+                            {% endif %}
+                         {% endfor %}
+                        {% if not forloop.last %} {% endif %}
+                        {% empty %}
+                        <h5>No employees assigned</h5>
+                    {% endfor %}
                     </td>
 					<td><a href="{% url 'task_update' tsk_id=tsk.id %}" class="btn btn-secondary" >Update </a></td>
 					<td><a href="{% url 'task_delete' tsk_id=tsk.id %}" class="btn btn-danger" >Delete </a></td>

@@ -1,22 +1,21 @@
-from datetime import date
-from django import template
 from django.utils import timezone
+from django.db import transaction
 
-from .models import CustomUser
-from django.http import HttpResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 
-from django.contrib import messages
-
 from .forms import EmployeeRegistrationForm, EmployeeUpdateForm, TaskCreateForm
-from .models import EmployeeProfile, Task
+from .models import CustomUser, TaskAssignmentConfirm, EmployeeProfile, Task
 
 
 def index(request):
     return render(request, 'index.html')
+
+
+def is_admin(user):
+    return user.is_authenticated and user.is_superuser
 
 
 def admin_login(request):
@@ -34,30 +33,13 @@ def admin_login(request):
         return render(request, 'admin_login.html')
 
 
-@login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def admin_home(request):
     return render(request, 'admin_home.html')
 
 
-# def employee_login(request):
-#     if request.method == 'POST':
-#         email = request.POST['email']
-#         password = request.POST['password']
-#         user = authenticate(request, username=email, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('employee_home')
-#         else:
-#             return render(request, 'employee_login.html', {'error': 'Username or password is incorrect!'})
-#     else:
-#         return render(request, 'employee_login.html')
-#
-#
-# def employee_home(request):
-#     return render(request, 'employee_home.html')
-
-
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def view_all_emp(request):
     if request.user.is_authenticated:
         users_to_exclude = CustomUser.objects.filter(username__in=['admin', 'zivile'])
@@ -78,6 +60,7 @@ def view_all_emp(request):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def add_emp(request):
     data = 'Register new Employee'
     if request.method == 'POST':
@@ -96,6 +79,7 @@ def emp_add_success(request):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def employee_update(request, emp_id):
     employee = get_object_or_404(EmployeeProfile, id=emp_id)
     user = employee.user
@@ -124,6 +108,7 @@ def emp_update_success(request):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def employee_delete(request, emp_id):
     employee = get_object_or_404(EmployeeProfile, id=emp_id)
     data = 'Delete Employee from DB'
@@ -136,6 +121,7 @@ def employee_delete(request, emp_id):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def task_add(request):
     data = 'Create Task Assignment'
     if request.method == 'POST':
@@ -151,12 +137,15 @@ def task_add(request):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def view_all_task(request):
     tasks = Task.objects.all().order_by('assign_date')
     show_outdated = request.GET.get('show_outdated', 'false') == 'true'
 
     if not show_outdated:
         tasks = tasks.filter(assign_date__gte=timezone.now().date())
+
+    confirmation_office = TaskAssignmentConfirm.objects.all()
 
     paginator = Paginator(tasks, 5)
     page_number = request.GET.get('page')
@@ -167,6 +156,7 @@ def view_all_task(request):
         'task_number': (page_obj.number - 1) * paginator.per_page,
         'data': 'Assigned tasks',
         'show_outdated': show_outdated,
+        'confirmation_office': confirmation_office,
     }
 
     if not tasks:
@@ -176,23 +166,47 @@ def view_all_task(request):
 
 
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def task_update(request, tsk_id):
     task = get_object_or_404(Task, id=tsk_id)
     data = 'Update Task: {}'.format(task.title)
 
     if request.method == 'POST':
         form = TaskCreateForm(request.POST, instance=task)
+
         if form.is_valid():
             form.save()
-            return redirect('view_all_task')
+            """Retrieve the updated assigned users after saving the form"""
+            new_assigned_users = set(task.assigned_to.all())
+
+            """Add or remove TaskAssignmentConfirm instances based on changes in assigned users"""
+            with transaction.atomic():
+                TaskAssignmentConfirm.objects.filter(task=task, employee__in=new_assigned_users).update(is_read=False)
+
+                for user in new_assigned_users:
+                    """Get or create TaskAssignmentConfirm for each user and task"""
+                    TaskAssignmentConfirm.objects.get_or_create(task=task, employee=user, defaults={'is_read': False})
+                """Update is_read for existing TaskAssignmentConfirm instances"""
+                TaskAssignmentConfirm.objects.filter(task=task).exclude(employee__in=new_assigned_users).delete()
+
+            return redirect('task_update_success')
     else:
-        form = TaskCreateForm(instance=task)
+        """Highlight the assigned employees"""
+        assigned_employees = task.assigned_to.all()
+        form = TaskCreateForm(instance=task, initial={'employees': assigned_employees})
 
     context = {'form': form, 'data': data}
+
     return render(request, 'task_update.html', context)
 
 
+def task_update_success(request):
+    form = TaskCreateForm()
+    return render(request, 'task_update_success.html', {'form': form})
+
+
 @login_required(login_url='/admin_login')
+@user_passes_test(is_admin, login_url='/admin_login')
 def task_delete(request, tsk_id):
     task = get_object_or_404(Task, id=tsk_id)
     data = 'Delete Task from DB'
@@ -203,3 +217,8 @@ def task_delete(request, tsk_id):
 
     context = {'task': task, 'data': data}
     return render(request, 'task_delete.html', context)
+
+
+def go_back(request):
+    previous_url = request.META.get('HTTP_REFERER', '/')
+    return redirect(previous_url)

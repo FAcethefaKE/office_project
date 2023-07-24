@@ -2,6 +2,7 @@
 {% block table %}
 
 <div class="section full mt-1 mb-2">
+    <button onclick="goBack()" class="btn btn-outline-secondary">Go Back</button>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="wide-block ">
@@ -34,15 +35,14 @@
 
 </div>
 <script>
-  // Display the modal when the form is submitted successfully
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent the form from submitting
-
     // Display the modal
     var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
     modal.show();
-  });
-
+</script>
+<script>
+  function goBack() {
+    window.history.back();
+  }
 </script>
 
 {% endblock %}
